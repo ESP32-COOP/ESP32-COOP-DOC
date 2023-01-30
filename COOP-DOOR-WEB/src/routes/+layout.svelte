@@ -6,7 +6,7 @@
 
 
 
-<div class="bg-cover absolute top-0 w-screen h-screen overflow-hidden bg-[url('/back.svg')] -z-10">
+<div class="bg-cover absolute top-0 w-screen h-screen overflow-hidden bg-[url('/back3.svg')] -z-10">
 
 </div> 
 

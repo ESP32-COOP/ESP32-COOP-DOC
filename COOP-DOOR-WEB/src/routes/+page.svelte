@@ -21,6 +21,9 @@
 <button on:click={() => {count++;}}>add 1</button>
 
 <p> test count = {count}</p>
-
+<div class="mx-4    grid grid-cols-2 gap-4 w-auto h-40">
 
 <SmallBadge { ...SmallBadgeData} value={count} />
+<SmallBadge { ...SmallBadgeData} value={count} />
+
+</div>
