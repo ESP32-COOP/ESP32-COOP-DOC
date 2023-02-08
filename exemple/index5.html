@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+</head>
+<body>
+
+
+	<button id="device">Connect to Esp</button>
+
+	<button  id="start">Start</button>
+	<button  id="stop">Stop</button>
+
+	<button id="led">LED</button>
+
+	<button id="disconnect">disconnect</button>
+
+	<button id="readDate">readDate</button>
+	<button id="writeDate">writeDate</button>
+
+<progress value="0" max="100"></progress>
+
+<style type="text/css">
+	progress{
+		transition: all 2s;
+	}
+	
+</style>
+
+<script type="text/javascript">
+
+	let id;
+	let bluetoothDeviceDetected;
+	let GATT_LED;
+	let GATT_RadNb;
+	let service2;
+	let GATT_date;
+
+	let bleService = '19B10000-E8F2-537E-4F6C-D104768A1214'.toLowerCase();
+	let bleCharacteristicLed = '19B10001-E8F2-537E-4F6C-D104768A1214'.toLowerCase();
+	let bleCharacteristicRanNb = '77a57c66-3bc9-463a-bc52-1ee5763b9c0f'.toLowerCase();
+	let dateService = '1ce76320-2d32-41af-b4c4-46836ea7a62a'.toLowerCase();
+	let dateChar = 'ad804469-19ec-406a-b949-31ae17e43813'.toLowerCase();
+	let LedOn = true
+
+	const progressBar = document.querySelector("progress")
+	const deviceName = 'COOP-DOOR';
+
+	document.querySelector('#start').disabled = true;
+	document.querySelector('#stop').disabled = true;
+	document.querySelector('#led').disabled = true;
+
+	document.querySelector('#start').addEventListener('click', function() {
+		if(iSWebBLEAvailable())
+			{start()}
+	});
+
+	document.querySelector('#stop').addEventListener('click', function() {
+		if(iSWebBLEAvailable())
+			{stop()}
+	});
+
+	document.querySelector('#device').addEventListener('click', function() {
+		if(iSWebBLEAvailable())
+			{read()}
+	});
+
+	document.querySelector('#led').addEventListener('click', function() {
+		if(iSWebBLEAvailable())
+			{led()}
+	});
+
+	document.querySelector("#readDate").addEventListener('click', function() {
+		readDate()
+		.then(date =>{
+				console.log("readDate:",date);
+		})
+		
+	})
+
+	document.querySelector("#writeDate").addEventListener('click', function() {
+		writeDate();
+		console.log("write..");
+	});
+
+	document.querySelector('#disconnect').addEventListener('click', function() {
+		if(bluetoothDeviceDetected.gatt.connected){
+			console.log("disconecting..")
+			bluetoothDeviceDetected.gatt.disconnect()
+		}
+		progressBar.newValue = 0;
+				move();
+			progressBar.value = 0;
+			console.log(bluetoothDeviceDetected)
+			document.querySelector('#start').disabled = true;
+			document.querySelector('#stop').disabled = true;
+			document.querySelector('#led').disabled = true;
+	});
+
+	
+
+
+	function iSWebBLEAvailable() {
+		if (!navigator.bluetooth){
+		console.log('not available');
+		return false;
+		}
+		return true;
+		
+	}
+
+	function getDeviceInfo() {
+		let options = {
+			//acceptAllDevices: true,
+			optionalServices : [bleService, 
+				bleCharacteristicLed,bleCharacteristicRanNb,
+				dateService, dateChar ],
+			filters : [
+			{namePrefix: deviceName}
+			]
+		}
+
+		console.log("Requestion BLE device info...")
+		return navigator.bluetooth.requestDevice(options).then(device => {
+			bluetoothDeviceDetected = device;
+			console.log('name '+device.name);
+		}).catch(error => {
+			console.log('Request device error: '+error);
+		})
+	}
+
+	function read() {
+		return (bluetoothDeviceDetected ? Promise.resolve() : getDeviceInfo())
+		.then(connectGATT2)
+		.then( _ => {
+			return GATT_RadNb.readValue();
+		})
+			.then( value => {
+				console.log('Reading value',value);
+				
+			})
+		.catch(error => {
+			console.log('Waiting to start reading'+error)
+		})
+	}
+	
+  async function connectGATT2(){
+  	deviceConnected = await bluetoothDeviceDetected.gatt.connected;
+  	server = await bluetoothDeviceDetected.gatt.connect()
+  	progressBar.newValue = 10;
+		move();
+  	service = await server.getPrimaryService(bleService); // get blik service
+  	progressBar.newValue = 40;
+  	move();
+
+  	GATT_LED = await service.getCharacteristic(bleCharacteristicLed);
+  	progressBar.newValue = 60;
+  	move();
+
+  	GATT_RadNb = await service.getCharacteristic(bleCharacteristicRanNb);
+  	progressBar.newValue = 100;
+  	move();
+
+
+  	service2 = await server.getPrimaryService(dateService);
+
+  	GATT_date = await service2.getCharacteristic(dateChar);
+
+  	GATT_LED.addEventListener('characteristicvaluechanged',
+	          handleChangedValue);
+  	GATT_RadNb.addEventListener('characteristicvaluechanged',
+	          handleChangedValue);
+  	document.querySelector('#start').disabled = false;
+		document.querySelector('#stop').disabled = false;
+		document.querySelector('#led').disabled = false;
+  }
+	function connectGATT() {
+		let test ="hello"
+		console.log(bluetoothDeviceDetected.gatt)
+		if(bluetoothDeviceDetected.gatt.connected
+			&& GATT_RadNb){
+			progressBar.newValue = 20;
+				move();
+			return Promise.resolve()
+		}
+		return bluetoothDeviceDetected.gatt.connect()
+		.then(server => {
+			progressBar.newValue = 37;
+				move();
+			document.querySelector("#device").innerHTML ="Connecting to ESP"
+			console.log('Getting GATT service...',server, server.getPrimaryService(bleService));
+			return server.getPrimaryService(bleService)
+		})
+		.then(service => {
+			progressBar.newValue = 75;
+				move();
+			document.querySelector("#device").innerHTML ="Connected to ESP"
+			console.log('Getting GATT characteristic',service);
+			GATT_LED = service.getCharacteristic(bleCharacteristicLed);
+			GATT_RadNb = service.getCharacteristic(bleCharacteristicRanNb)
+
+			GATT_LED
+			.then(characteristic => {
+				progressBar.newValue = 100;
+				move();
+				characteristic.addEventListener('characteristicvaluechanged',
+	          handleChangedValue);
+
+			})
+			GATT_RadNb
+			.then(characteristic => {
+				characteristic.addEventListener('characteristicvaluechanged',
+	          handleChangedValue);
+
+			})
+	      
+	      document.querySelector('#start').disabled = false;
+	      document.querySelector('#led').disabled = false;
+	      document.querySelector('#stop').disabled = true;
+			
+			return true
+		})
+		
+	}
+
+	async function start() {
+		dump = await GATT_RadNb.startNotifications();
+		console.log('start reading..')
+		document.querySelector('#start').disabled = true;
+	  document.querySelector('#stop').disabled = false;
+	
+	}
+
+	async function stop() {
+		dump = await GATT_RadNb.stopNotifications()
+		console.log('stop reading..')
+		document.querySelector('#start').disabled = false;
+	  document.querySelector('#stop').disabled = true;		
+	}
+
+	function handleChangedValue(event) {
+    let value = event.target.value//event.target.value.getUint8(0)
+    var now = new Date()
+    //new TextDecoder('utf-8')).decode(value)
+    console.log('> ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds() + ' Value is ' + value.getUint8(0))
+  }
+
+  async function led() {
+  	document.querySelector('#led').disabled = true;
+	  dump =  await GATT_LED.writeValue(LedOn ? Uint8Array.of(1) : Uint8Array.of(0));
+	  LedOn = LedOn ? false: true;
+	  document.querySelector('#led').disabled = false;
+	  return dump;
+
+  }
+
+
+ function move() {
+  id = setInterval(frame, 20);
+  function frame() {
+    if (progressBar.value >= progressBar.newValue) {
+      clearInterval(id);
+    } else {
+      progressBar.value += 1;
+    }
+  }
+
+}
+
+async function readDate() {
+		const dump = await GATT_date.readValue()
+		return dump
+}
+
+  function getDate(){
+  	const date = new Date();
+  	dateInfo = [date.getHours(), date.getMinutes(), date.getDay(), date.getMonth(), date.getYear()]
+  	return new Uint8Array(dateInfo)
+  }
+
+  function writeDate(){
+  	GATT_date.writeValue(getDate())
+  }
+
+
+ // readDate()
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<form>
+	<button>Connect to Esp</button>
+</form>
+
+<script type="text/javascript">
+	function iSWebBLEAvailable() {
+		if (!navigator.bluetooth){
+		console.log('not available');
+		return false;
+		}
+		return true;
+		
+	}
+
+	function getDeviceInfo() {
+		let options = {
+			acceptAllDevices: true
+			/*filters : [
+			{name: deviceName}
+			]*/
+		}
+
+		console.log("Requestion BLE device info...")
+		navigator.bluetooth.requestDevice(options).then(device => {
+			console.log('name '+device.name, device);
+		}).catch(error => {
+			console.log('Request device error: '+error);
+		})
+	}
+
+	const deviceName = 'door'
+	document.querySelector('form').addEventListener('submit',
+		function(event) {
+			event.stopPropagation()
+			event.preventDefault()
+
+			if (iSWebBLEAvailable()) {
+				getDeviceInfo()
+			}
+		})
+
+	iSWebBLEAvailable();
+</script>

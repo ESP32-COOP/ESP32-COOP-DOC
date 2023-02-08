@@ -1,0 +1,185 @@
+
+	<button id="device">Connect to Esp</button>
+	<button id="start">Start</button>
+	<button id="stop">Stop</button>
+	<button id="led">LED</button>
+
+	<h2 id="log"></h1>
+
+<script type="text/javascript">
+
+	let bluetoothDeviceDetected;
+	let GATT_LED;
+	let GATT_RadNb;
+	let bleService = '19B10000-E8F2-537E-4F6C-D104768A1214'.toLowerCase();
+	let bleCharacteristicLed = '19B10001-E8F2-537E-4F6C-D104768A1214'.toLowerCase();
+	let bleCharacteristicRanNb = '77a57c66-3bc9-463a-bc52-1ee5763b9c0f'.toLowerCase();
+	let LedOn = true
+
+	const deviceName = 'COOP-DOOR';
+
+	document.querySelector('#start').disabled = true;
+	document.querySelector('#stop').disabled = true;
+	document.querySelector('#led').disabled = true;
+
+	document.querySelector('#start').addEventListener('click', function() {
+		if(iSWebBLEAvailable())
+			{start()}
+	});
+
+	document.querySelector('#stop').addEventListener('click', function() {
+		if(iSWebBLEAvailable())
+			{stop()}
+	});
+
+	document.querySelector('#device').addEventListener('click', function() {
+		if(iSWebBLEAvailable())
+			{read()}
+	});
+
+	document.querySelector('#led').addEventListener('click', function() {
+		if(iSWebBLEAvailable())
+			{led()}
+	});
+
+
+	function iSWebBLEAvailable() {
+		if (!navigator.bluetooth){
+		console.log('not available');
+		return false;
+		}
+		return true;
+		
+	}
+
+	function getDeviceInfo() {
+		let options = {
+			acceptAllDevices: true,
+			optionalServices : [bleService, bleCharacteristicLed,bleCharacteristicRanNb]
+			 /*filters : [
+			 {name: deviceName}
+			 ]*/
+		}
+
+		console.log("Requestion BLE device info...")
+		return navigator.bluetooth.requestDevice(options).then(device => {
+			bluetoothDeviceDetected = device;
+			console.log('name '+device.name);
+		}).catch(error => {
+			console.log('Request device error: '+error);
+		})
+	}
+
+	function read() {
+		return (bluetoothDeviceDetected ? Promise.resolve() : getDeviceInfo())
+		.then(connectGATT)
+		.then( _ => {
+			GATT_RadNb
+			.then( value => {
+				console.log('Reading value',value);
+				return value.readValue();
+			})
+			
+		})
+		.catch(error => {
+			console.log('Waiting to start reading'+error)
+		})
+	}
+	
+
+	function connectGATT() {
+		let test ="hello"
+		console.log(bluetoothDeviceDetected.gatt)
+		if(bluetoothDeviceDetected.gatt.connected
+			&& GATT_RadNb){
+			return Promise.resolve()
+		}
+		return bluetoothDeviceDetected.gatt.connect()
+		.then(server => {
+			document.querySelector("#device").innerHTML ="Connecting to ESP"
+			console.log('Getting GATT service...',server, server.getPrimaryService(bleService));
+			return server.getPrimaryService(bleService)
+		})
+		.then(service => {
+			document.querySelector("#device").innerHTML ="Connected to ESP"
+			console.log('Getting GATT characteristic',service);
+			GATT_LED = service.getCharacteristic(bleCharacteristicLed);
+			GATT_RadNb = service.getCharacteristic(bleCharacteristicRanNb)
+
+			GATT_LED
+			.then(characteristic => {
+				characteristic.addEventListener('characteristicvaluechanged',
+	          handleChangedValue);
+
+			})
+			GATT_RadNb
+			.then(characteristic => {
+				characteristic.addEventListener('characteristicvaluechanged',
+	          handleChangedValue);
+
+			})
+	      
+	      document.querySelector('#start').disabled = false;
+	      document.querySelector('#led').disabled = false;
+	      document.querySelector('#stop').disabled = true;
+	
+			return true
+		})
+		
+	}
+
+	function start() {
+
+		GATT_RadNb
+		.then( GATT => {
+			GATT.startNotifications()
+			console.log('start reading..')
+			document.querySelector('#start').disabled = true;
+	      	document.querySelector('#stop').disabled = false;
+		})
+	
+	}
+
+	function stop() {
+		GATT_RadNb
+		.then( GATT => {
+			GATT.stopNotifications()
+			console.log('stop reading..')
+			document.querySelector('#start').disabled = false;
+	      	document.querySelector('#stop').disabled = true;
+		})
+		
+	}
+	function handleChangedValue(event) {
+    let value = event.target.value//event.target.value.getUint8(0)
+	document.querySelector("#log").innerHTML= value.getUint8(0);
+    var now = new Date()
+    //new TextDecoder('utf-8')).decode(value)
+    console.log('> ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds() + ' Value is ' + value.getUint8(0))
+  }
+
+  function led() {
+  	document.querySelector('#led').disabled = true;
+  	GATT_LED
+  	.then(GATT =>{
+  		if (LedOn){
+	  		LedOn = false;
+	  		console.log('LED Off..')
+	  		const newVal = Uint8Array.of(1);
+	  		return GATT.writeValue(newVal);
+	  	}else{
+	  		LedOn = true;
+	  		console.log('LED On..')
+	  		const newVal = Uint8Array.of(0);
+	  		return GATT.writeValue(newVal);
+	  	}
+  	})
+  	.then(_ => {
+  		document.querySelector('#led').disabled = false;
+  	})
+
+  }
+
+ 
+
+</script>
