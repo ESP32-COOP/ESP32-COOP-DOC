@@ -13,8 +13,13 @@
     }
 </script>
 
-<div class="p-2 h-screen grid grid-cols-1 " style="grid-template-rows : 1fr 1fr 6fr 3fr;">
-    <p>button</p>
+<div class="p-2 h-screen grid grid-cols-1 " style="grid-template-rows : 1fr 1fr 8fr 3fr;">
+    <div class="w-full h-full flex flex-row items-center">
+        <div class=" ml-auto bg-opacity-80 bg-slate-300 h-fit m-2 p-2 rounded-full">
+            <img src="gear.svg">
+        </div>
+    </div>
+
     <h1 class="uppercase text-3xl ml-8">coop <span class="font-bold">door</span></h1>
     <div class="">
 
