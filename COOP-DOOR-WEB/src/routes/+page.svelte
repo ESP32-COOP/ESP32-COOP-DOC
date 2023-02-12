@@ -9,7 +9,8 @@
         subTitle: 'britness level',
         subTitleType: "value",
         value: count,
-        badgeType: "dark"
+        badgeType: "dark",
+        link: "cards/light"
 
     }
 
@@ -18,6 +19,7 @@
         subTitle: 'britness level',
         subTitleType: "value",
         icon: "clock",
+        link: "cards/clock"
 
     }
 </script>

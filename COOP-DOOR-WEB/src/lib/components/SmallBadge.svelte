@@ -5,6 +5,7 @@
     export let value: number = 0;
     export let subTitle: string = "Sub Title";
     export let icon: string = "light";
+    export let link: string = "";
     let primaryColor:string;
     let primaryTextColor:string;
     let secondaryTextColor:string = "";
@@ -58,6 +59,7 @@
     </div>
 
     <div class="flex justify-center items-center">
-        <div class="{btnColor} rounded-full align-middle  p-2 px-7 py-3"><img class="h-4" src="arrow.svg" alt="arrow"></div>
+        <a href="{link}">
+        <div class="{btnColor} rounded-full align-middle  p-2 px-7 py-3"><img class="h-4" src="arrow.svg" alt="arrow"></div></a>
     </div>
 </div>
