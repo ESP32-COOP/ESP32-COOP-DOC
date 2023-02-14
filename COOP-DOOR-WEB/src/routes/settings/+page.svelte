@@ -1,4 +1,3 @@
-
 <div class="p-2 h-screen grid grid-cols-1 " style="grid-template-rows : 1fr 1fr 11fr ;">
     <div class="w-full h-full flex flex-row items-center">
         <a class="" href="/device">
