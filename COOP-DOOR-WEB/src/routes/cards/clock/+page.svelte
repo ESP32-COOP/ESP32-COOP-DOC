@@ -27,7 +27,7 @@ let dateDevice = new Date(datePhone.getTime() + 2*60000);
 
         <div class="bg-slate-50 rounded-xl grid grid-cols-2 items-center justify-center gap-5">
             <p class=" text-right ">delta :</p>
-            <h4 class="text-red-500 text-3xl">{(dateDevice - datePhone)/60000} min</h4>
+            <h4 class="text-red-500 text-3xl">{(dateDevice.getTime() - datePhone.getTime())/60000} min</h4>
 
         </div>
 
