@@ -13,13 +13,13 @@ let dateDevice = new Date(datePhone.getTime() + 2*60000);
         <div class=" h-full w-full rounded-xl grid grid-cols-2 gap-5" >
             <div class="h-full w-full bg-slate-50 rounded-xl flex flex-col justify-around items-center">
                 <h2 class="text-5xl">{dateDevice.getHours()}:{dateDevice.getMinutes()}</h2>
-                <h3 class="text-3xl">{dateDevice.getDay()}/{dateDevice.getMonth()}/{dateDevice.getFullYear()}</h3>
+                <h3 class="text-2xl">{dateDevice.getDay()}/{dateDevice.getMonth()}/{dateDevice.getFullYear()}</h3>
                 <p class="text-black/80">device</p>
             </div>
 
             <div class="h-full w-full bg-slate-50 rounded-xl flex flex-col justify-around items-center">
                 <h2 class="text-5xl">{datePhone.getHours()}:{datePhone.getMinutes()}</h2>
-                <h3 class="text-3xl">{datePhone.getDay()}/{datePhone.getMonth()}/{datePhone.getFullYear()}</h3>
+                <h3 class="text-2xl">{datePhone.getDay()}/{datePhone.getMonth()}/{datePhone.getFullYear()}</h3>
                 <p class="text-black/80">phone</p>
             </div>
 
