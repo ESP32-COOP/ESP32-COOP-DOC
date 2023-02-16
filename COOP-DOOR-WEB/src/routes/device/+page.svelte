@@ -1,5 +1,4 @@
 <script lang="ts">
-    import BigTitle from '$lib/components/BigTitle.svelte';
     import SmallBadge from '$lib/components/SmallBadge.svelte';
 
     let count = 1;

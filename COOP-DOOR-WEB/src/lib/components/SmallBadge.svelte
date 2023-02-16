@@ -23,7 +23,7 @@
         
         
     }else{
-        primaryColor = "from-blue-900 to-slate-900";
+        primaryColor = "from-blue-900 to-slate-900 opacity-80";
         primaryTextColor = "text-white";
         secondaryTextColor = "text-slate-400";
         iconColor = "invert";
