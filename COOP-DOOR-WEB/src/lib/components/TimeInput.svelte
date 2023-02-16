@@ -10,7 +10,7 @@
 	style="grid-template-columns : 1fr 1fr 1fr ;"
 >
 	<div class="flex h-full w-full items-center justify-center">
-		<img class="m-auto h-full w-full " src="clock.svg" alt="clock" />
+		<img class=" h-full w-auto " src="clock.svg" alt="clock" />
 	</div>
 	<div class="flex h-full w-full items-center justify-center">
 		<p class="font-bold">at</p>

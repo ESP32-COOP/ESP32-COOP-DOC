@@ -10,10 +10,10 @@
 	style="grid-template-columns : 1fr 1fr 1fr ;"
 >
 	<div class="flex h-full w-full items-center justify-center">
-		<img class="m-auto h-full w-full " src="light.svg" alt="light" />
+		<img class=" h-full w-auto " src="light.svg" alt="light" />
 	</div>
 	<div class="flex h-full w-full items-center justify-center">
-		<img class="m-auto w-7 {direction == "lower" ? "rotate-180" : ""} " src="arrow.svg" alt="arrow" />
+		<img class=" w-7 {direction == "lower" ? "rotate-180" : ""} " src="arrow.svg" alt="arrow" />
 	</div>
 	<input
 		class="w-full rounded-xl bg-slate-500 p-2 text-xl font-bold text-white"
