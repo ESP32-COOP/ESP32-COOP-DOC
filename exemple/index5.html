@@ -39,9 +39,7 @@
 	let service2;
 	let GATT_date;
 
-	let bleService = '19B10000-E8F2-537E-4F6C-D104768A1214'.toLowerCase();
-	let bleCharacteristicLed = '19B10001-E8F2-537E-4F6C-D104768A1214'.toLowerCase();
-	let bleCharacteristicRanNb = '77a57c66-3bc9-463a-bc52-1ee5763b9c0f'.toLowerCase();
+
 	let dateService = '1ce76320-2d32-41af-b4c4-46836ea7a62a'.toLowerCase();
 	let dateChar = 'ad804469-19ec-406a-b949-31ae17e43813'.toLowerCase();
 	let LedOn = true
@@ -115,9 +113,7 @@
 	function getDeviceInfo() {
 		let options = {
 			//acceptAllDevices: true,
-			optionalServices : [bleService, 
-				bleCharacteristicLed,bleCharacteristicRanNb,
-				dateService, dateChar ],
+			optionalServices : [dateService, dateChar ],
 			filters : [
 			{namePrefix: deviceName}
 			]
@@ -139,7 +135,7 @@
 			return GATT_RadNb.readValue();
 		})
 			.then( value => {
-				console.log('Reading value',value);
+				console.log('Reading value',new Uint8Array(value)[0]);
 				
 			})
 		.catch(error => {
@@ -150,17 +146,7 @@
   async function connectGATT2(){
   	deviceConnected = await bluetoothDeviceDetected.gatt.connected;
   	server = await bluetoothDeviceDetected.gatt.connect()
-  	progressBar.newValue = 10;
-		move();
-  	service = await server.getPrimaryService(bleService); // get blik service
-  	progressBar.newValue = 40;
-  	move();
 
-  	GATT_LED = await service.getCharacteristic(bleCharacteristicLed);
-  	progressBar.newValue = 60;
-  	move();
-
-  	GATT_RadNb = await service.getCharacteristic(bleCharacteristicRanNb);
   	progressBar.newValue = 100;
   	move();
 
@@ -177,54 +163,7 @@
 		document.querySelector('#stop').disabled = false;
 		document.querySelector('#led').disabled = false;
   }
-	function connectGATT() {
-		let test ="hello"
-		console.log(bluetoothDeviceDetected.gatt)
-		if(bluetoothDeviceDetected.gatt.connected
-			&& GATT_RadNb){
-			progressBar.newValue = 20;
-				move();
-			return Promise.resolve()
-		}
-		return bluetoothDeviceDetected.gatt.connect()
-		.then(server => {
-			progressBar.newValue = 37;
-				move();
-			document.querySelector("#device").innerHTML ="Connecting to ESP"
-			console.log('Getting GATT service...',server, server.getPrimaryService(bleService));
-			return server.getPrimaryService(bleService)
-		})
-		.then(service => {
-			progressBar.newValue = 75;
-				move();
-			document.querySelector("#device").innerHTML ="Connected to ESP"
-			console.log('Getting GATT characteristic',service);
-			GATT_LED = service.getCharacteristic(bleCharacteristicLed);
-			GATT_RadNb = service.getCharacteristic(bleCharacteristicRanNb)
-
-			GATT_LED
-			.then(characteristic => {
-				progressBar.newValue = 100;
-				move();
-				characteristic.addEventListener('characteristicvaluechanged',
-	          handleChangedValue);
-
-			})
-			GATT_RadNb
-			.then(characteristic => {
-				characteristic.addEventListener('characteristicvaluechanged',
-	          handleChangedValue);
-
-			})
-	      
-	      document.querySelector('#start').disabled = false;
-	      document.querySelector('#led').disabled = false;
-	      document.querySelector('#stop').disabled = true;
-			
-			return true
-		})
-		
-	}
+	
 
 	async function start() {
 		dump = await GATT_RadNb.startNotifications();
@@ -272,7 +211,8 @@
 
 async function readDate() {
 		const dump = await GATT_date.readValue()
-		return dump
+		console.log(dump)
+		return getLongFromBytesBuffer(dump)
 }
 
  function getDate(){
@@ -282,24 +222,15 @@ async function readDate() {
   }
 
  function writeDate(){
-	  let now = 1678623410; //Date.now();
+
+	  let now =  Math.round(Date.now() / 1000); //Date.now();
 	  let bytes = getBytesFromLong(now);
-	  console.log(now);
-	  console.log("bytes",bytes, getLongFromBytes(bytes));
+	  console.log(now,bytes,getLongFromBytes(bytes))
 	  let buffer = new Uint8Array(bytes).buffer;
 	  GATT_date.writeValue(buffer);
 	}
 
-function getBytesFromLong(x) {
-  let bytes = new Array(8);
-  for (let i = 0; i < 8; i++) {
-    bytes[i] = x & 0xff;
-    x = x >> 8;
-  }
-  return bytes.reverse();
-}
 
-	/*
 	function getBytesFromLong(x) {
 	  let bytes = new Array(8);
 	  for (let i = 0; i < 8; i++) {
@@ -308,7 +239,7 @@ function getBytesFromLong(x) {
 	  }
 	  return bytes;
 	}
-	*/
+
 
 
 
@@ -317,6 +248,13 @@ function getLongFromBytes(bytes) {
 	  let result = 0;
 	  for (let i = 7; i >= 0; i--) {
 	    result = (result * 256) + bytes[i];
+	  }
+	  return result;
+	}
+function getLongFromBytesBuffer(bytes) {
+	  let result = 0;
+	  for (let i = 7; i >= 0; i--) {
+	    result = (result * 256) + bytes.getUint8(i);
 	  }
 	  return result;
 	}
