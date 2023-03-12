@@ -275,15 +275,52 @@ async function readDate() {
 		return dump
 }
 
-  function getDate(){
+ function getDate(){
   	const date = new Date();
   	dateInfo = [date.getHours(), date.getMinutes(), date.getDay(), date.getMonth(), date.getYear()]
   	return new Uint8Array(dateInfo)
   }
 
-  function writeDate(){
-  	GATT_date.writeValue(getDate())
+ function writeDate(){
+	  let now = 1678623410; //Date.now();
+	  let bytes = getBytesFromLong(now);
+	  console.log(now);
+	  console.log("bytes",bytes, getLongFromBytes(bytes));
+	  let buffer = new Uint8Array(bytes).buffer;
+	  GATT_date.writeValue(buffer);
+	}
+
+function getBytesFromLong(x) {
+  let bytes = new Array(8);
+  for (let i = 0; i < 8; i++) {
+    bytes[i] = x & 0xff;
+    x = x >> 8;
   }
+  return bytes.reverse();
+}
+
+	/*
+	function getBytesFromLong(x) {
+	  let bytes = new Array(8);
+	  for (let i = 0; i < 8; i++) {
+	    bytes[i] = x & 0xff;
+	    x = (x - bytes[i]) / 256;
+	  }
+	  return bytes;
+	}
+	*/
+
+
+
+
+function getLongFromBytes(bytes) {
+	  let result = 0;
+	  for (let i = 7; i >= 0; i--) {
+	    result = (result * 256) + bytes[i];
+	  }
+	  return result;
+	}
+
 
 
  // readDate()
