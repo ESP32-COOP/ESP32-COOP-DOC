@@ -155,10 +155,9 @@
 
   	GATT_date = await service2.getCharacteristic(dateChar);
 
-  	GATT_LED.addEventListener('characteristicvaluechanged',
+  	GATT_date.addEventListener('characteristicvaluechanged',
 	          handleChangedValue);
-  	GATT_RadNb.addEventListener('characteristicvaluechanged',
-	          handleChangedValue);
+
   	document.querySelector('#start').disabled = false;
 		document.querySelector('#stop').disabled = false;
 		document.querySelector('#led').disabled = false;
@@ -166,7 +165,7 @@
 	
 
 	async function start() {
-		dump = await GATT_RadNb.startNotifications();
+		dump = await GATT_date.startNotifications();
 		console.log('start reading..')
 		document.querySelector('#start').disabled = true;
 	  document.querySelector('#stop').disabled = false;
@@ -174,17 +173,16 @@
 	}
 
 	async function stop() {
-		dump = await GATT_RadNb.stopNotifications()
+		dump = await GATT_date.stopNotifications()
 		console.log('stop reading..')
 		document.querySelector('#start').disabled = false;
 	  document.querySelector('#stop').disabled = true;		
 	}
 
 	function handleChangedValue(event) {
-    let value = event.target.value//event.target.value.getUint8(0)
-    var now = new Date()
-    //new TextDecoder('utf-8')).decode(value)
-    console.log('> ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds() + ' Value is ' + value.getUint8(0))
+    console.log("changed",getLongFromBytesBuffer(event.target.value))
+    
+    
   }
 
   async function led() {
@@ -261,7 +259,6 @@ function getLongFromBytesBuffer(bytes) {
 
 
 
- // readDate()
 
 </script>
 
