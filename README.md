@@ -4,7 +4,8 @@ Coop Door made with a Esp32
 ### Idea :
 #### Light data
 ```c++
-int analogValue = analogRead(A0); // Read the analog value from the light resistor
+int analogValue = analogRead(A0); // Read the analog value from the light resistor or ble_value = random(10, 10000);
+//int analogValue = random(10, 10000);
 int minValue = 100; // Replace with your own minimum value
 int maxValue = 800; // Replace with your own maximum value
 
