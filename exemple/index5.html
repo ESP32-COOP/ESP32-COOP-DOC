@@ -40,8 +40,8 @@
 		document.querySelector("#readLight").addEventListener('click',_ =>{ 
 			readLight()
 			.then(data => {
-				const divider = data[3] / data[4]
-				console.log("readlight",data,
+				const divider = 1000 / 255 // 255 max value of bytes
+				console.log("readlight",divider,data,
 				Math.ceil(data[0]*divider),Math.ceil(data[1]*divider),Math.ceil(data[2]*divider))})});
 		
 
@@ -128,7 +128,7 @@
 		async function readLight() {
 			const dump = await lightChar.readValue()
 			//console.log("readLight", dump)
-			return getArryFromBuffer(dump,5)
+			return getArryFromBuffer(dump,3)
 		}
 
 		async function readDate() {

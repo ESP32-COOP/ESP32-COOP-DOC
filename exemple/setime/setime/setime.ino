@@ -6,7 +6,7 @@ ESP32Time rtc;
 
 BLEService dateService("1ce76320-2d32-41af-b4c4-46836ea7a62a"); // Bluetooth® Low Energy LED Service
 BLECharacteristic dateCharacteristic("ad804469-19ec-406a-b949-31ae17e43813", BLERead | BLENotify | BLEWrite, 8);
-BLECharacteristic lightCharacteristic("947aad02-c25d-11ed-afa1-0242ac120002", BLERead | BLENotify , 5);
+BLECharacteristic lightCharacteristic("947aad02-c25d-11ed-afa1-0242ac120002", BLERead | BLENotify , 3);
 
 
 uint8_t ble_value = 0x0;
@@ -86,13 +86,12 @@ void manageLight(){
   Serial.print(" maxValue ");
   Serial.print(maxValue);
   Serial.println("");
-  float divider = maxValue / 255.0;
+  float divider = 1000 / 255.0; //1000 max allowed value, 255 max byte value
   uint8_t currentValue = analogValue / divider;
   uint8_t scaledMinValue = minValue / divider;
   uint8_t scaledMaxValue = maxValue / divider;
-  float dividerScale = 255/divider;
 
-  uint8_t ble_value_array[5] = {currentValue, scaledMinValue, scaledMaxValue, (uint8_t)(divider*dividerScale),(uint8_t)dividerScale };
+  uint8_t ble_value_array[5] = {currentValue, scaledMinValue, scaledMaxValue };
 
   // Write the array to the characteristic
   lightCharacteristic.writeValue(ble_value_array, 5);
