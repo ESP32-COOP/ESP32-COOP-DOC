@@ -8,7 +8,7 @@
 
 </head>
 
-<body>
+<body style="background-color: black;">
 
 	<button id="device">Connect to Esp</button>
 	<button id="disconnect">disconnect</button>
@@ -37,10 +37,19 @@
 		// array 3 -> value, min, max
 	
 
-		document.querySelector("#readLight").addEventListener('click',_ =>{ console.log("readlight",readLight())});
+		document.querySelector("#readLight").addEventListener('click',_ =>{ 
+			readLight()
+			.then(data => {
+				const divider = data[3] / data[4]
+				console.log("readlight",data,
+				Math.ceil(data[0]*divider),Math.ceil(data[1]*divider),Math.ceil(data[2]*divider))})});
 		
 
-		document.querySelector('#device').addEventListener('click', function () {if (iSWebBLEAvailable()) { connectGATT() }	});
+		document.querySelector('#device').addEventListener('click', function () {if (iSWebBLEAvailable()) { 
+			getDeviceInfo().then(_ => {
+				connectGATT();
+			})
+			 }	});
 
 		document.querySelector("#readDate").addEventListener('click', function () {
 			readDate()
@@ -76,7 +85,7 @@
 
 		function getDeviceInfo() {
 			let options = {
-				optionalServices: [serviceUUID, dateCharUUID],
+				optionalServices: [serviceUUID, dateCharUUID,lightCharUUID],
 				filters: [
 					{ namePrefix: deviceName }
 				]
@@ -104,6 +113,7 @@
 
 			dateChar.addEventListener('characteristicvaluechanged',
 				handleChangedValue);
+			console.log("connected")
 
 		}
 
@@ -117,7 +127,8 @@
 
 		async function readLight() {
 			const dump = await lightChar.readValue()
-			return getLongFromBytesBuffer(dump)
+			//console.log("readLight", dump)
+			return getArryFromBuffer(dump,5)
 		}
 
 		async function readDate() {
@@ -173,7 +184,7 @@
 
 		function getArryFromBuffer(bytes,len){
 			let result = [];
-			for (let i = len-1; i >= 0; i--) {
+			for (let i = 0; i < len; i++) {
 				result.push( bytes.getUint8(i));
 			}
 			return result;
