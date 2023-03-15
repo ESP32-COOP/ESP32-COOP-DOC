@@ -76,10 +76,11 @@ void loop() {
 
 
 void manageLight(){
-  if (lightCharacteristic.written() && lightCharacteristic.value()[3] == 0x00) {
+  if (lightCharacteristic.written() && lightCharacteristic.value()[3] != 0x00) {
     analogValue = random(10, 1000);
     minValue = analogValue;
     maxValue = analogValue;
+    Serial.println("reset light");
 
     
   } else {
