@@ -15,6 +15,9 @@ int analogValue = 500;
 int minValue = analogValue; 
 int maxValue = analogValue; 
 
+int doorWantedStatus = 0;
+int doorNbTurn = 1;
+
 void setup() {
   Serial.begin(9600);
   rtc.setTime(1609459200);
@@ -62,6 +65,7 @@ void loop() {
 
       manageDate();
       manageLight();
+      manageDoor();
 
 
     }
@@ -77,6 +81,16 @@ void loop() {
 
 }
 
+void manageDoor(){
+  if (doorCharacteristic.written() ) {
+    Serial.println("update Door");
+    Serial.print(doorCharacteristic.value()[0]);
+     Serial.print(";");
+      Serial.println(doorCharacteristic.value()[1]);
+  }else{
+    //todo
+  }
+}
 
 void manageLight(){
   if (lightCharacteristic.written() && lightCharacteristic.value()[3] != 0x00) {
