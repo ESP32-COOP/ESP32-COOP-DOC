@@ -8,15 +8,31 @@ BLEService service("1ce76320-2d32-41af-b4c4-46836ea7a62a"); // Bluetooth® Low E
 BLECharacteristic dateCharacteristic("ad804469-19ec-406a-b949-31ae17e43813", BLERead | BLENotify | BLEWrite, 8);
 BLECharacteristic lightCharacteristic("947aad02-c25d-11ed-afa1-0242ac120002", BLERead | BLENotify | BLEWrite , 4);
 BLECharacteristic doorCharacteristic("c3773399-b755-4e30-9160-bed203fae718", BLERead | BLENotify | BLEWrite , 2);
+BLECharacteristic doorCloseCharacteristic("e011ba0e-84c5-4e83-8648-f3e2660c44b0", BLERead | BLENotify | BLEWrite , 4);
+BLECharacteristic doorOpenCharacteristic("cc959fff-4f84-4d08-a720-9d9156a48ed5", BLERead | BLENotify | BLEWrite , 4);
 
-
+//badge
 uint8_t ble_value = 0x0;
 int analogValue = 500;
 int minValue = analogValue; 
 int maxValue = analogValue; 
 
+//settings door
 int doorWantedStatus = 0;
 int doorNbTurn = 1;
+
+//settings close
+int doorCloseMode = 0;
+int doorCloseLightThreshold = -1;
+int doorCloseTimeH = -1;
+int doorCloseTImeM = -1;
+
+//settings open
+int doorOpenMode = 0;
+int doorOpenLightThreshold = -1;
+int doorOpenTimeH = -1;
+int doorOpenTImeM = -1;
+
 
 void setup() {
   Serial.begin(9600);
@@ -35,6 +51,8 @@ void setup() {
   service.addCharacteristic(dateCharacteristic);
   service.addCharacteristic(lightCharacteristic);
   service.addCharacteristic(doorCharacteristic);
+  service.addCharacteristic(doorCloseCharacteristic);
+  service.addCharacteristic(doorOpenCharacteristic);
   BLE.addService(service);
   dateCharacteristic.writeValue(0);
   lightCharacteristic.writeValue(0);
@@ -65,7 +83,10 @@ void loop() {
 
       manageDate();
       manageLight();
-      manageDoor();
+      manageSettingsDoor();
+      manageSettingsClose();
+      manageSettingsOpen();
+
 
 
     }
@@ -81,7 +102,38 @@ void loop() {
 
 }
 
-void manageDoor(){
+void manageSettingsOpen(){
+  if (doorCloseCharacteristic.written() ) {
+    Serial.println("update Door Close settings");
+    Serial.print(doorCloseCharacteristic.value()[0]);
+    Serial.print(";");
+    Serial.print(doorCloseCharacteristic.value()[1]);
+    Serial.print(";");
+    Serial.print(doorCloseCharacteristic.value()[2]);
+    Serial.print(";");
+    Serial.println(doorCloseCharacteristic.value()[3]);
+  }else{
+    //todo
+  }
+}
+
+void manageSettingsClose(){
+  if (doorOpenCharacteristic.written() ) {
+    Serial.println("update Door Close settings");
+    Serial.print(doorOpenCharacteristic.value()[0]);
+    Serial.print(";");
+    Serial.print(doorOpenCharacteristic.value()[1]);
+    Serial.print(";");
+    Serial.print(doorOpenCharacteristic.value()[2]);
+    Serial.print(";");
+    Serial.println(doorOpenCharacteristic.value()[3]);
+  }else{
+    //todo
+  }
+}
+
+
+void manageSettingsDoor(){
   if (doorCharacteristic.written() ) {
     Serial.println("update Door");
     Serial.print(doorCharacteristic.value()[0]);
