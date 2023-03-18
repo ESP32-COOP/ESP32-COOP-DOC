@@ -112,10 +112,11 @@ void manageSettingsOpen(){
     Serial.print(doorOpenCharacteristic.value()[2]);
     Serial.print(";");
     Serial.println(doorOpenCharacteristic.value()[3]);
-    doorCloseMode = doorOpenCharacteristic.value()[0];
-    doorCloseLightThreshold = doorOpenCharacteristic.value()[1];
-    doorCloseTimeH = doorOpenCharacteristic.value()[2];
-    doorCloseTImeM = doorOpenCharacteristic.value()[3];
+    doorOpenMode = doorOpenCharacteristic.value()[0];
+    doorOpenLightThreshold = doorOpenCharacteristic.value()[1];
+    doorOpenTimeH = doorOpenCharacteristic.value()[2];
+    doorOpenTImeM = doorOpenCharacteristic.value()[3];
+    
   }else{
     //todo
   }
@@ -131,6 +132,11 @@ void manageSettingsClose(){
     Serial.print(doorCloseCharacteristic.value()[2]);
     Serial.print(";");
     Serial.println(doorCloseCharacteristic.value()[3]);
+    doorCloseMode = doorCloseCharacteristic.value()[0];
+    doorCloseLightThreshold = doorCloseCharacteristic.value()[1];
+    doorCloseTimeH = doorCloseCharacteristic.value()[2];
+    doorCloseTImeM = doorCloseCharacteristic.value()[3];
+    
   }else{
     //todo
   }
