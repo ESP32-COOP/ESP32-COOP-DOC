@@ -103,8 +103,8 @@ void loop() {
 }
 
 void manageSettingsOpen(){
-  if (doorCloseCharacteristic.written() ) {
-    Serial.println("update Door Close settings");
+  if (doorOpenCharacteristic.written() ) {
+    Serial.println("update Door Open settings");
     Serial.print(doorCloseCharacteristic.value()[0]);
     Serial.print(";");
     Serial.print(doorCloseCharacteristic.value()[1]);
@@ -118,7 +118,7 @@ void manageSettingsOpen(){
 }
 
 void manageSettingsClose(){
-  if (doorOpenCharacteristic.written() ) {
+  if (doorCloseCharacteristic.written() ) {
     Serial.println("update Door Close settings");
     Serial.print(doorOpenCharacteristic.value()[0]);
     Serial.print(";");

@@ -20,6 +20,10 @@
 
 	<button id="writeDoor">WriteDoor</button>
 
+	<button id="writeDoorClose">writeDoorClose</button>
+
+	<button id="writeDoorOpen">writeDoorOpen</button>
+
 </body>
 
 </html>
@@ -32,6 +36,8 @@
 	let dateChar;
 	let lightChar;
 	let doorChar;
+	let doorCloseChar;
+	let doorOpenChar;
 	const deviceName = 'COOP-DOOR';
 
 
@@ -39,6 +45,8 @@
 	let dateCharUUID = 'ad804469-19ec-406a-b949-31ae17e43813'.toLowerCase();
 	let lightCharUUID = '947aad02-c25d-11ed-afa1-0242ac120002'.toLowerCase();
 	let doorCharUUID = 'c3773399-b755-4e30-9160-bed203fae718'.toLowerCase();
+	let doorCloseCharUUID = 'e011ba0e-84c5-4e83-8648-f3e2660c44b0'.toLowerCase();
+	let doorOpenCharUUID = 'cc959fff-4f84-4d08-a720-9d9156a48ed5'.toLowerCase();
 	// array 3 -> value, min, max
 
 
@@ -53,6 +61,13 @@
 
 	document.querySelector("#writeDoor").addEventListener('click', _ => {
 		writeDoor(getRandomInt(3),getRandomInt(10));
+	})
+
+	document.querySelector("#writeDoorClose").addEventListener('click', _ => {
+		writeCloseDoor(getRandomInt(3),getRandomInt(100),getRandomInt(24),getRandomInt(60));
+	})
+	document.querySelector("#writeDoorOpen").addEventListener('click', _ => {
+		writeOpenDoor(getRandomInt(3),getRandomInt(100),getRandomInt(24),getRandomInt(60));
 	})
 
 
@@ -98,7 +113,8 @@
 
 	function getDeviceInfo() {
 		let options = {
-			optionalServices: [serviceUUID, dateCharUUID, lightCharUUID, doorCharUUID],
+			optionalServices: [serviceUUID, dateCharUUID, lightCharUUID, doorCharUUID,
+			doorCloseCharUUID, doorOpenCharUUID],
 			filters: [
 				{ namePrefix: deviceName }
 			]
@@ -124,6 +140,8 @@
 		dateChar = await service.getCharacteristic(dateCharUUID);
 		lightChar = await service.getCharacteristic(lightCharUUID);
 		doorChar = await service.getCharacteristic(doorCharUUID);
+		doorCloseChar = await service.getCharacteristic(doorCloseCharUUID);
+		doorOpenChar = await service.getCharacteristic(doorOpenCharUUID);
 
 		dateChar.addEventListener('characteristicvaluechanged',
 			handleChangedValue);
@@ -169,6 +187,18 @@
 	function writeDoor(status, turn) {
 		let buffer = new Uint8Array([status, turn]).buffer;
 		doorChar.writeValue(buffer);
+	}
+
+	function writeCloseDoor(mode, light, hour, minute){
+		let buffer = new Uint8Array([mode, light, hour, minute]).buffer;
+		doorCloseChar.writeValue(buffer);
+
+	}
+
+	function writeOpenDoor(mode, light, hour, minute){
+		let buffer = new Uint8Array([mode, light, hour, minute]).buffer;
+		doorOpenChar.writeValue(buffer);
+
 	}
 
 
