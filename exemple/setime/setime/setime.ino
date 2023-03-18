@@ -105,13 +105,17 @@ void loop() {
 void manageSettingsOpen(){
   if (doorOpenCharacteristic.written() ) {
     Serial.println("update Door Open settings");
-    Serial.print(doorCloseCharacteristic.value()[0]);
+    Serial.print(doorOpenCharacteristic.value()[0]);
     Serial.print(";");
-    Serial.print(doorCloseCharacteristic.value()[1]);
+    Serial.print(doorOpenCharacteristic.value()[1]);
     Serial.print(";");
-    Serial.print(doorCloseCharacteristic.value()[2]);
+    Serial.print(doorOpenCharacteristic.value()[2]);
     Serial.print(";");
-    Serial.println(doorCloseCharacteristic.value()[3]);
+    Serial.println(doorOpenCharacteristic.value()[3]);
+    doorCloseMode = doorOpenCharacteristic.value()[0];
+    doorCloseLightThreshold = doorOpenCharacteristic.value()[1];
+    doorCloseTimeH = doorOpenCharacteristic.value()[2];
+    doorCloseTImeM = doorOpenCharacteristic.value()[3];
   }else{
     //todo
   }
@@ -120,13 +124,13 @@ void manageSettingsOpen(){
 void manageSettingsClose(){
   if (doorCloseCharacteristic.written() ) {
     Serial.println("update Door Close settings");
-    Serial.print(doorOpenCharacteristic.value()[0]);
+    Serial.print(doorCloseCharacteristic.value()[0]);
     Serial.print(";");
-    Serial.print(doorOpenCharacteristic.value()[1]);
+    Serial.print(doorCloseCharacteristic.value()[1]);
     Serial.print(";");
-    Serial.print(doorOpenCharacteristic.value()[2]);
+    Serial.print(doorCloseCharacteristic.value()[2]);
     Serial.print(";");
-    Serial.println(doorOpenCharacteristic.value()[3]);
+    Serial.println(doorCloseCharacteristic.value()[3]);
   }else{
     //todo
   }
@@ -193,11 +197,6 @@ void manageDate() {
   } else {
     Serial.println(rtc.getEpoch());
     byte* tmpDate = getBytesFromLong(rtc.getEpoch());
-    for (int i = 0; i < 8; i++) {
-      Serial.print(tmpDate[i], HEX);
-      Serial.print(" ");
-    }
-    Serial.println();
 
     dateCharacteristic.writeValue(tmpDate, 8);
     delete[] tmpDate;
