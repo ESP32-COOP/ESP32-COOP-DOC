@@ -1,6 +1,8 @@
 # [ESP32-COOP-DOOR](https://coop-door.vercel.app/)
 Coop Door made with a Esp32
 
+the goal is to document to protcol in wich the 2 device comunicate
+
 ### Idea :
 #### Light data
 ```c++
