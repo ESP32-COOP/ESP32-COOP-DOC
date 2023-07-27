@@ -3,6 +3,14 @@ Coop Door made with a Esp32
 
 the goal is to document to protcol in wich the 2 device comunicate
 
+
+currently there is 5 communication subjet
+- the light sensor
+- the time
+- the closeing door condition
+- the opening door condition
+- the current door settings 
+
 ### Idea :
 #### Light data
 ```c++
