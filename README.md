@@ -9,7 +9,15 @@ currently there is 5 communication subjet
 - the time
 - the closeing door condition
 - the opening door condition
-- the current door settings 
+- the current door settings
+
+
+### light sensor
+make out of 4 bytes
+
+### time
+make out of 9 bytes 8 to repsrente UNIX time and 1 to rpresente the UTC offset
+  
 
 ### Idea :
 #### Light data
