@@ -1,46 +1,73 @@
-# [ESP32-COOP-DOOR](https://coop-door.vercel.app/)
-Coop Door made with a Esp32
+<div align="center">
+<img width=200 alt="logo JS-BLE-DOC" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/0afd19ac-6f4f-4478-bcf5-080bf4258cda">
 
-the goal is to document to protcol in wich the 2 device comunicate
+# [ESP32-COOP-DOOR DOC](https://coop-door.vercel.app/) 
 
+Coop Door Documentation :book:
 
-
-<img src="https://github.com/ESP32-COOP/JS-BLE-LIB/assets/37497007/fc5af1d0-81f3-4928-ad49-e429e57f3b67" alt="comunication between JS and a ESP32" style="width:400px"/>
-
-
-## BLE protocol
-
-to better understand the following you must understand the basic of the Bluetooth low enrgy protocol
-
-the key part to understand is that it uses fix size array of bytes to send data to an end point
-
-each endpoint can have 3 propretise, writable, readble, and notifyable
-
-like that the naming indicate, it allow the exteranl user to write/edit the end point ( it is officaly call charactertistique in BLE) read the charatersisitque and get notify when that value is updated
-
-a bytes is made out of 8 bit, it value can go from 0 to 255, 
-
-to unable you to send the wanted value in bytes must think it throw, 
-
-you will need to sigure out the array size you will need and the fuction to convert it and back in C and in jS
-
-currently there is 5 communication subjet
-- the light sensor
-- the time
-- the closeing door condition
-- the opening door condition
-- the current door settings
+The goal is to document the protocol in which the two devices communicate over BLE 
+</div>
 
 
-### light sensor
-make out of 4 bytes
+## :memo: Summary:
 
-### time
-make out of 9 bytes 8 to repsrente UNIX time and 1 to rpresente the UTC offset
-  
+- :page_facing_up: Quick presentation of the mother project (goal, link device, protocol used, problematic) 
+- :iphone: How to get the app 
+- :construction: The wiring setup (//todo)
+- :construction: 3D file (//todo) 
+- :electric_plug: Run-down on how BLE works 
+- :bar_chart: The type of data required by the project (in progress) 
+-  :computer: Code snippet for each characteristic (in progress)
 
-### Idea :
-#### Light data
+
+### :page_facing_up: Project Overview
+
+The [COOP-DOOR](https://github.com/ESP32-COOP) project aims to create an intelligent and user-friendly automatic coop door system. It empowers users to customize the door's behavior based on specific conditions, such as time and light levels. To facilitate device management and monitoring, the project offers a mobile app. The app enables users to track device and sensor health, as well as configure various operating conditions. For a demonstration of the project, please refer to the demo [here](https://github.com/ESP32-COOP/ESP32-COOP-DOOR-WEB). The core of the smart coop door relies on the ESP-32 platform, and the code repository can be found [here](https://github.com/ESP32-COOP/ESP32-COOP-DOOR-CORE). This documentation page aims to guide users through the setup process, hardware requirements, and detailed workings of the system.
+
+## :iphone: App Installation
+
+
+<img width=100 alt="app icon" align="left" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/8056a93b-1d68-41e8-b1e9-84ded7e0bde6">
+<br clear="right"/>
+The coop door application is a Progressive Web App, meaning it functions as a website and can be installed on mobile devices for offline usage.
+<br clear="left"/>
+<br clear="left"/>
+
+To install the app, follow these steps:
+
+1. Visit [coop-door.vercel.app](https://coop-door.vercel.app) using your mobile device's web browser.
+2. A small popup will prompt you to install the app. Tap "Install" to proceed.
+3. Alternatively, if the popup doesn't appear, you can manually add the app to your home screen by:
+   - Tapping the three dots in Chrome.
+   - Scrolling down and selecting "Add shortcut to home screen" or "Install app."
+4. The app will be installed on your device and accessible from the home screen.
+
+Now, you can conveniently use the mobile app to monitor and control your coop door system, even without an internet connection.
+
+## :electric_plug: BLE Protocol
+
+To better understand the following, you must understand the basics of the Bluetooth Low Energy (BLE) protocol 
+
+The key part to understand is that it uses a fixed-size array of bytes to send data to an endpoint.
+
+Each endpoint can have three properties: writable, readable, and notifyable.
+
+- Writable: It allows the external user to write/edit the endpoint (officially called characteristic in BLE).
+- Readable: It allows reading the characteristic's value.
+- Notifyable: It allows getting notified when that value is updated.
+
+A byte is made out of 8 bits, and its value can go from 0 to 255.
+
+To send the desired value in bytes, you must think it through:
+
+- You will need to figure out the array size you will need and the function to convert it back and forth in C and in JS.
+
+Currently, there are five communication subjects:
+1. The light sensor (made out of 4 bytes).
+2. The time (made out of 9 bytes, 8 to represent UNIX time and 1 to represent the UTC offset).
+
+### :bulb: Idea:
+#### Light Data
 ```c++
 int analogValue = analogRead(A0); // Read the analog value from the light resistor or ble_value = random(10, 10000);
 //int analogValue = random(10, 10000);
@@ -61,3 +88,5 @@ uint8_t ble_value_array[4] = {currentValue, scaledMinValue, scaledMaxValue, (uin
 // Write the array to the characteristic
 switchCharacteristic2.writeValue(ble_value_array, 4);
 ```
+
+![Communication between JS and an ESP32](https://github.com/ESP32-COOP/JS-BLE-LIB/assets/37497007/fc5af1d0-81f3-4928-ad49-e429e57f3b67)
