@@ -3,6 +3,11 @@ Coop Door made with a Esp32
 
 the goal is to document to protcol in wich the 2 device comunicate
 
+
+
+<img src="https://github.com/ESP32-COOP/JS-BLE-LIB/assets/37497007/fc5af1d0-81f3-4928-ad49-e429e57f3b67" alt="comunication between JS and a ESP32" style="width:400px"/>
+
+
 ## BLE protocol
 
 to better understand the following you must understand the basic of the Bluetooth low enrgy protocol
