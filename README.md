@@ -3,6 +3,21 @@ Coop Door made with a Esp32
 
 the goal is to document to protcol in wich the 2 device comunicate
 
+## BLE protocol
+
+to better understand the following you must understand the basic of the Bluetooth low enrgy protocol
+
+the key part to understand is that it uses fix size array of bytes to send data to an end point
+
+each endpoint can have 3 propretise, writable, readble, and notifyable
+
+like that the naming indicate, it allow the exteranl user to write/edit the end point ( it is officaly call charactertistique in BLE) read the charatersisitque and get notify when that value is updated
+
+a bytes is made out of 8 bit, it value can go from 0 to 255, 
+
+to unable you to send the wanted value in bytes must think it throw, 
+
+you will need to sigure out the array size you will need and the fuction to convert it and back in C and in jS
 
 currently there is 5 communication subjet
 - the light sensor
