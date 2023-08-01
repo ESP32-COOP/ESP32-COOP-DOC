@@ -46,9 +46,14 @@ Now, you can conveniently use the mobile app to monitor and control your coop do
 
 ## :electric_plug: BLE Protocol
 
-To better understand the following, you must understand the basics of the Bluetooth Low Energy (BLE) protocol 
-
+<img width=100 alt="BLE illustration" align="left" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/77d5236b-3843-43ea-ab0d-cbb7d245f219">
+<br clear="right"/>
+To better understand the following, you must understand the basics of the Bluetooth Low Energy (BLE) protocol.<br/>
 The key part to understand is that it uses a fixed-size array of bytes to send data to an endpoint.
+<br clear="left"/>
+<br clear="left"/>
+
+
 
 Each endpoint can have three properties: writable, readable, and notifyable.
 
