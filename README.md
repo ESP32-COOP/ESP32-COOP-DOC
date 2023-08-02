@@ -71,6 +71,13 @@ Currently, there are five communication subjects:
 1. The light sensor (made out of 4 bytes).
 2. The time (made out of 9 bytes, 8 to represent UNIX time and 1 to represent the UTC offset).
 
+
+### Illustration
+
+<img width="1588" alt="wiering" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/7f0adbd3-8df5-45b4-bfa8-e88f8ae9db93">
+
+
+
 ### :bulb: Idea:
 #### Light Data
 ```c++
