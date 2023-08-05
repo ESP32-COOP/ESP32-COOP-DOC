@@ -13,7 +13,7 @@ The goal is to document the protocol in which the two devices communicate over B
 
 - :page_facing_up: Quick presentation of the mother project (goal, link device, protocol used, problematic) 
 - :iphone: How to get the app 
-- :construction: The wiring setup (//todo)
+- :construction: Requirement (the wiring setup)
 - :construction: 3D file (//todo) 
 - :electric_plug: Run-down on how BLE works 
 - :bar_chart: The type of data required by the project (in progress) 
