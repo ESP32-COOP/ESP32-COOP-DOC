@@ -1,9 +1,9 @@
 <div align="center">
 <img width=200 alt="logo JS-BLE-DOC" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/0afd19ac-6f4f-4478-bcf5-080bf4258cda">
 
-# [ESP32-COOP-DOOR DOC](https://coop-door.vercel.app/) 
+# [ :book: ESP32-COOP-DOOR DOC](https://coop-door.vercel.app/) 
 
-Coop Door Documentation :book:
+Coop Door Documentation 
 
 The goal is to document the protocol in which the two devices communicate over BLE 
 </div>
