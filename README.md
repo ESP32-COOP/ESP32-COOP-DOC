@@ -77,7 +77,7 @@ Currently, there are five communication subjects:
 
 This projet use a ESP32 WEMOS lolin32 lite, a H-Bridge l298n, a motor with a encoder, a final a photoresistor
 #### Illustration:
-<img width="1588" alt="wiring diagram" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/bdc9e767-49e6-4a54-aa71-7f2b21e7add6">
+<img width="1588" alt="wiring diagram" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/fa3992ba-100c-4e66-be85-4387ff7f884b">
 
 
 
