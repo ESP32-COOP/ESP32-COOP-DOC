@@ -1,30 +1,29 @@
 <div align="center">
 <img width=200 alt="logo JS-BLE-DOC" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/0afd19ac-6f4f-4478-bcf5-080bf4258cda">
 
-# [ :book: ESP32-COOP-DOOR DOC](https://coop-door.vercel.app/) 
+# [ :book: ESP32 Coop Door Documentation ](https://coop-door.vercel.app/) 
 
-Coop Door Documentation 
-
-The goal is to document the protocol in which the two devices communicate over BLE 
+The goal is to document the setup & configuration of the [esp32-coop](https://github.com/ESP32-COOP) projet as well as the protocol in which the two devices communicate over BLE 
 </div>
 
 
-## :memo: Summary:
+# :memo: Summary:
 
-- :page_facing_up: Quick presentation of the mother project (goal, link device, protocol used, problematic) 
-- :iphone: How to get the app 
-- :construction: Requirement (the wiring setup)
-- :construction: 3D file (//todo) 
+- :page_facing_up: **Projet Overview**: quick presentation of the mother project (goal, link device, protocol used, problematic) 
+- :iphone: **The App**: how to get the it 
+- :construction: :clipboard: **Requirement**: the wiring diagram
+- :rocket: First Boot
+- :construction: 3D file (//todo)
 - :electric_plug: Run-down on how BLE works 
 - :bar_chart: The type of data required by the project (in progress) 
--  :computer: Code snippet for each characteristic (in progress)
+- :computer: Code snippet for each characteristic (in progress)
 
 
-### :page_facing_up: Project Overview
+# :page_facing_up: Project Overview
 
 The [COOP-DOOR](https://github.com/ESP32-COOP) project aims to create an intelligent and user-friendly automatic coop door system. It empowers users to customize the door's behavior based on specific conditions, such as time and light levels. To facilitate device management and monitoring, the project offers a mobile app. The app enables users to track device and sensor health, as well as configure various operating conditions. For a demonstration of the project, please refer to the demo [here](https://github.com/ESP32-COOP/ESP32-COOP-DOOR-WEB). The core of the smart coop door relies on the ESP-32 platform, and the code repository can be found [here](https://github.com/ESP32-COOP/ESP32-COOP-DOOR-CORE). This documentation page aims to guide users through the setup process, hardware requirements, and detailed workings of the system.
 
-## :iphone: App Installation
+# :iphone: App Installation
 
 
 <img width=100 alt="app icon" align="left" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/8056a93b-1d68-41e8-b1e9-84ded7e0bde6">
@@ -44,7 +43,7 @@ To install the app, follow these steps:
 
 Now, you can conveniently use the mobile app to monitor and control your coop door system, even without an internet connection.
 
-## :electric_plug: BLE Protocol
+# :electric_plug: BLE Protocol
 
 <img width=100 alt="BLE illustration" align="left" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/77d5236b-3843-43ea-ab0d-cbb7d245f219">
 <br clear="right"/>
@@ -72,7 +71,7 @@ Currently, there are five communication subjects:
 2. The time (made out of 9 bytes, 8 to represent UNIX time and 1 to represent the UTC offset).
 
 
-### Requirement
+# Requirement
 
 
 This projet use a ESP32 WEMOS lolin32 lite, a H-Bridge l298n, a motor with a encoder, a final a photoresistor
