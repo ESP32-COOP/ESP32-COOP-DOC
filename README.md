@@ -9,9 +9,9 @@ The goal is to document the setup & configuration of the [esp32-coop](https://gi
 
 # :memo: Summary:
 
-- :page_facing_up: **Projet Overview**: quick presentation of the mother project (goal, link device, protocol used, problematic) 
+- [:page_facing_up: **Projet Overview**](page_facing_up-project-overview): quick presentation of the mother project (goal, link device, protocol used, problematic) 
 - [:iphone: **The App**](#iphone-app-installation): how to get the it
-- :toolbox: **Build instruction**
+- [:toolbox: **Build instruction**](#toolbox-build-instruction)
    - :clipboard: **Requirement**: the wiring diagram
    - :rocket: First Boot
    - :house: 3D file (//todo)
@@ -45,7 +45,74 @@ To install the app, follow these steps:
 
 Now, you can conveniently use the mobile app to monitor and control your coop door system, even without an internet connection.
 
-# :electric_plug: BLE Protocol
+
+# :toolbox: Build instruction
+
+Look out for instruction variations depending on the version of the project you're building.
+
+First of all, you will need to flash the firmware on the ESP32. Please refer to the instructions [here](https://github.com/ESP32-COOP/ESP32-COOP-DOOR-CORE). I do recommend unplugging the motor before flashing the firmware to avoid any connection problems caused by the encoder or any accidental movement of the powered motor.
+
+## :clipboard: Requirement
+
+
+This projet use :<br>
+- a ESP32 [WEMOS lolin32 lite](https://fr.aliexpress.com/item/4000038780903.html?spm=a2g0o.productlist.main.1.365b7074KBRyQT&algo_pvid=fa4a7510-076f-4fb9-8ed4-3253a3a69928&algo_exp_id=fa4a7510-076f-4fb9-8ed4-3253a3a69928-0&pdp_npi=4%40dis%21EUR%212.40%212.4%21%21%212.56%21%21%402132a21116927149487777888ec3b7%2112000030098281375%21sea%21FR%21821278985%21&curPageLogUid=oNK3v7tChtb8) ( can be any esp32 with BLE), <br>
+- a H-Bridge [l298n](https://fr.aliexpress.com/item/1005004510885871.html?spm=a2g0o.productlist.main.1.4ab84eaai4P1f2&algo_pvid=83586f20-9cd5-4dc6-a3a3-c75def78a4cb&algo_exp_id=83586f20-9cd5-4dc6-a3a3-c75def78a4cb-0&pdp_npi=4%40dis%21EUR%211.74%211.53%21%21%211.85%21%21%402132a21116927149924648112ec3b7%2112000029421559001%21sea%21FR%21821278985%21&curPageLogUid=vMEusi5qQJYG),<br> 
+- a [motor with a encoder](https://fr.aliexpress.com/item/4001314473291.html?spm=a2g0o.productlist.main.1.52dd699a8YKYiK&algo_pvid=2a4b28bb-bc90-458b-ae85-f85eb2cfdece&algo_exp_id=2a4b28bb-bc90-458b-ae85-f85eb2cfdece-0&pdp_npi=4%40dis%21EUR%215.76%215.76%21%21%216.14%21%21%402132a21116927150494998265ec3b7%2110000015695661379%21sea%21FR%21821278985%21&curPageLogUid=HH3ljdlfyhi0), <br>
+- and a [photoresistor](Vhttps://fr.aliexpress.com/item/32760631393.html?spm=a2g0o.productlist.main.1.5dd44f76NrlFVE&algo_pvid=25a08ae4-57ee-4d4c-91c6-76967f27dc4b&algo_exp_id=25a08ae4-57ee-4d4c-91c6-76967f27dc4b-0&pdp_npi=4%40dis%21EUR%210.72%210.6%21%21%210.77%21%21%402132f35616927151872427277e2c69%2110000001115154392%21sea%21FR%21821278985%21&curPageLogUid=ZBl0dvCbwSIm)
+
+Additionally, you'll need some basic items such as wires, soldering equipment (or soldering iron), and a 3D printer or woodworking tools, depending on your preferences.
+
+Please note that you can easily swap out any component of this project for a similar one. It will most likely work out fine, but it may require some extra work. I would recommend it only to experienced thinkers.
+
+## :electric_plug: Wiring
+As illustrated below, follow these connections:
+
+ESP32:
+- Connect encoder signal to pin 2 (yellow) and pin 15 (green).
+- Attach a resistor to pin 34 for analog value.
+- Control the H-bridge with pins 27 (ENA), 26 (IN1), and 15 (IN2).
+
+Remember to establish a ground connection between the H-bridge and the ESP32.
+
+<img width="1588" alt="wiring diagram" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/fa3992ba-100c-4e66-be85-4387ff7f884b">
+
+## :rocket: Initial Setup
+
+**Before Coop Installation:**
+
+It's a good idea to run comprehensive tests before installing the device in the coop. Debugging is much easier and less frustrating when you're comfortably situated in a well-ventilated room.
+
+**Initial ESP32 Boot:**
+
+When the ESP32 boots up initially, it assumes the door is closed. If that's not the case, unplug either the motor or the ESP and manually close the door.
+
+**Proper Device Boot:**
+
+Now you can properly start up your device. Inside the app, go to settings and then to the door section. Set the number of rotations you want the motor to perform in order to open the door. Click the test button, and the motor will complete a full cycle (going up and then back down). Begin with a small rotation number, and gradually adjust it until you reach your desired door height.
+
+**Optimal Rotation Value:**
+
+Once you've figured out the best number of motor rotations, jot down this value along with the light sensor reading. To sync the ESP32's time, head to the app's home page and click on the time badge. A panel will appear, showing the time difference between your phone and the ESP32, along with a sync button.
+
+**Setting Conditions:**
+
+With that sorted, configure open and closing conditions in the door settings. Base these conditions solely on time, and set the door to stay open for the rest of the day.
+
+**Chicken Entry Time:**
+
+Return to the coop at the designated chicken entry time to check the light sensor value. If needed, adjust the closing condition within the app's settings.
+
+**Autonomous Operation:**
+
+To enable autonomous operation, revisit the settings and door page. Click on 'auto' and then 'apply'.
+
+## :carpentry_saw: Casing Details
+
+You can find the 3D model at this #link, and the technical drawing is available at this #link.
+
+
+# :loudspeaker: BLE Protocol
 
 <img width=100 alt="BLE illustration" align="left" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/77d5236b-3843-43ea-ab0d-cbb7d245f219">
 <br clear="right"/>
@@ -71,15 +138,6 @@ To send the desired value in bytes, you must think it through:
 Currently, there are five communication subjects:
 1. The light sensor (made out of 4 bytes).
 2. The time (made out of 9 bytes, 8 to represent UNIX time and 1 to represent the UTC offset).
-
-
-# Requirement
-
-
-This projet use a ESP32 WEMOS lolin32 lite, a H-Bridge l298n, a motor with a encoder, a final a photoresistor
-#### Illustration:
-<img width="1588" alt="wiring diagram" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/fa3992ba-100c-4e66-be85-4387ff7f884b">
-
 
 
 ### :bulb: Idea:
