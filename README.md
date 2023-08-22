@@ -10,13 +10,15 @@ The goal is to document the setup & configuration of the [esp32-coop](https://gi
 # :memo: Summary:
 
 - :page_facing_up: **Projet Overview**: quick presentation of the mother project (goal, link device, protocol used, problematic) 
-- :iphone: **The App**: how to get the it 
-- :construction: :clipboard: **Requirement**: the wiring diagram
-- :rocket: First Boot
-- :construction: 3D file (//todo)
-- :electric_plug: Run-down on how BLE works 
-- :bar_chart: The type of data required by the project (in progress) 
-- :computer: Code snippet for each characteristic (in progress)
+- [:iphone: **The App**: how to get the it](https://github.com/ESP32-COOP/JS-BLE-DOC#iphone-app-installation)
+- :toolbox: **Build instruction**
+   - :clipboard: **Requirement**: the wiring diagram
+   - :rocket: First Boot
+   - :house: 3D file (//todo)
+- :signal_strength: **Communication protocol**
+   - :electric_plug: Run-down on how BLE works 
+   - :bar_chart: The type of data required by the project (in progress) 
+   - :computer: Code snippet for each characteristic (in progress)
 
 
 # :page_facing_up: Project Overview
