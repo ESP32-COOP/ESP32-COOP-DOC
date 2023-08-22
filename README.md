@@ -10,7 +10,7 @@ The goal is to document the setup & configuration of the [esp32-coop](https://gi
 # :memo: Summary:
 
 - :page_facing_up: **Projet Overview**: quick presentation of the mother project (goal, link device, protocol used, problematic) 
-- [:iphone: **The App**: how to get the it](https://github.com/ESP32-COOP/JS-BLE-DOC#iphone-app-installation)
+- [:iphone: **The App**](#iphone-app-installation): how to get the it
 - :toolbox: **Build instruction**
    - :clipboard: **Requirement**: the wiring diagram
    - :rocket: First Boot
