@@ -124,7 +124,7 @@ To enable autonomous operation, revisit the settings and door page. Click on 'au
 
 You can find the 3D model at this [link](https://github.com/ESP32-COOP/JS-BLE-DOC/blob/main/3D_file_esp32_coop.stl), and the technical drawing is available //todo.
 
-# :signal_strenght: Wireless comunication
+# :signal_strength: Wireless comunication
 ## :loudspeaker: BLE Protocol
 
 <img width=100 alt="BLE illustration" align="left" src="https://github.com/ESP32-COOP/JS-BLE-DOC/assets/37497007/77d5236b-3843-43ea-ab0d-cbb7d245f219">
