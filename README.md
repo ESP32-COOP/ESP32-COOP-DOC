@@ -3,7 +3,7 @@
 
 # [ :book: ESP32 Coop Door Documentation ](https://coop-door.vercel.app/) 
 
-The goal is to document the setup & configuration of the [esp32-coop](https://github.com/ESP32-COOP) projet as well as the protocol in which the two devices communicate over BLE 
+The goal is to document the setup & configuration of the [esp32-coop](https://github.com/ESP32-COOP) project as well as the protocol in which the two devices communicate over BLE 
 </div>
 
 
